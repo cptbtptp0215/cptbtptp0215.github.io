@@ -51,6 +51,76 @@
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
         }
 
+        /* --- 新增：音乐控制样式 --- */
+        .music-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            background: rgba(212, 175, 55, 0.3);
+            border: 1.5px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+        .music-btn.playing {
+            animation: rotateAlbum 5s linear infinite;
+        }
+        @keyframes rotateAlbum {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- 新增：相册样式 --- */
+        .album-section {
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .album-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 40px;
+        }
+        .photo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .photo-card {
+            background: #fff;
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.4s;
+            width: 260px;
+        }
+        .photo-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .photo-card span {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.2rem;
+        }
+        .photo-card:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+        }
+
         /* 时间轴容器 */
         .timeline {
             position: relative;
@@ -191,6 +261,12 @@
 
 <div id="starfield"></div>
 
+<!-- 新增：音频标签 & 按钮 -->
+<div class="music-btn" id="musicBtn">🎵</div>
+<audio id="bgMusic" loop>
+    <source src="music/perfect.mp3" type="audio/mpeg">
+</audio>
+
 <header class="header">
     <h1>你好呀,荣荣小姐</h1>
     <p style="letter-spacing: 3px; opacity: 0.8;">MSR ❤️ LPF</p>
@@ -271,6 +347,33 @@
     </div>
 </div>
 
+<!-- 新增：相册部分 -->
+<section class="album-section">
+    <h2 class="album-title">我们的瞬间</h2>
+    <div class="photo-grid">
+        <div class="photo-card" style="transform: rotate(-3deg);">
+            <img src="images/photo1.jpg" alt="1">
+            <span>初见那天</span>
+        </div>
+        <div class="photo-card" style="transform: rotate(2deg);">
+            <img src="images/photo2.jpg" alt="2">
+            <span>银基动物王国</span>
+        </div>
+        <div class="photo-card" style="transform: rotate(-1deg);">
+            <img src="images/photo3.jpg" alt="3">
+            <span>雪地里的吻</span>
+        </div>
+        <div class="photo-card" style="transform: rotate(3deg);">
+            <img src="images/photo4.jpg" alt="4">
+            <span>最美的合照</span>
+        </div>
+        <div class="photo-card" style="transform: rotate(-2deg);">
+            <img src="images/photo5.jpg" alt="5">
+            <span>未来有你</span>
+        </div>
+    </div>
+</section>
+
 <section class="zodiac-section">
     <h3 style="color:var(--gold); margin-bottom: 20px;">命中注定的绝配</h3>
     <div class="zodiac-flex">
@@ -306,6 +409,32 @@
 </footer>
 
 <script>
+    // --- 新增：音乐控制逻辑 ---
+    const musicBtn = document.getElementById('musicBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    let isPlaying = false;
+
+    function toggleMusic() {
+        if (isPlaying) {
+            bgMusic.pause();
+            musicBtn.classList.remove('playing');
+            musicBtn.innerHTML = "🎵";
+        } else {
+            bgMusic.play();
+            musicBtn.classList.add('playing');
+            musicBtn.innerHTML = "💿";
+        }
+        isPlaying = !isPlaying;
+    }
+
+    musicBtn.addEventListener('click', toggleMusic);
+
+    // 针对浏览器政策：用户首次点击页面任意处尝试自动播放
+    document.addEventListener('click', () => {
+        if(!isPlaying) { toggleMusic(); }
+    }, { once: true });
+
+
     // 滚动监测
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
