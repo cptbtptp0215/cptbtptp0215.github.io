@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSR&LPF的专属网页</title>
+    <title>MSR&LPF的爱情简史</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap');
 
@@ -51,7 +51,7 @@
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
         }
 
-        /* --- 音乐控制样式 --- */
+        /* 音乐控制 */
         .music-btn {
             position: fixed;
             top: 25px;
@@ -67,88 +67,30 @@
             align-items: center;
             cursor: pointer;
             font-size: 20px;
-            transition: all 0.3s;
+            transition: all 0.3;
         }
-        .music-btn.playing {
-            animation: rotateAlbum 5s linear infinite;
-        }
-        @keyframes rotateAlbum {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        .music-btn.playing { animation: rotateAlbum 5s linear infinite; }
+        @keyframes rotateAlbum { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- 相册集系统样式 --- */
-        .album-section {
-            padding: 60px 20px;
-            text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .album-title {
-            font-family: 'Ma Shan Zheng', cursive;
-            font-size: 2.8rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-        }
-        .album-hint {
-            color: var(--gold);
-            font-size: 0.9rem;
-            margin-bottom: 40px;
-            opacity: 0.8;
-        }
-        .photo-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-        }
-        /* 封面卡片特有样式 */
-        .album-cover {
-            position: relative;
-            cursor: pointer;
-        }
-        .album-cover::after {
-            content: "点击打开相册";
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(212, 175, 55, 0.9);
-            color: #000;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .album-cover:hover::after { opacity: 1; }
-
+        /* 相册样式 */
+        .album-section { padding: 60px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
+        .album-title { font-family: 'Ma Shan Zheng', cursive; font-size: 2.8rem; color: var(--gold); margin-bottom: 10px; }
+        .album-hint { color: var(--gold); font-size: 0.9rem; margin-bottom: 40px; opacity: 0.8; }
+        .photo-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+        
         .photo-card {
             background: #fff;
             padding: 12px 12px 35px 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: 0.4s;
-            width: 240px;
+            width: 260px;
+            cursor: pointer;
         }
-        .photo-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-        }
-        .photo-card span {
-            display: block;
-            margin-top: 15px;
-            color: #333;
-            font-family: 'Ma Shan Zheng', cursive;
-            font-size: 1.1rem;
-        }
-        .photo-card:hover {
-            transform: scale(1.05) rotate(0deg) !important;
-            z-index: 10;
-        }
+        .photo-card img { width: 100%; height: 220px; object-fit: cover; display: block; background: #222; }
+        .photo-card span { display: block; margin-top: 15px; color: #333; font-family: 'Ma Shan Zheng', cursive; font-size: 1.2rem; }
+        .photo-card:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 10; }
 
-        /* 弹窗相册详情层 */
+        /* 弹窗相册 */
         .album-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -159,148 +101,51 @@
             overflow-y: auto;
             padding: 50px 20px;
         }
-        .modal-close {
-            position: fixed;
-            top: 20px; right: 20px;
-            color: var(--gold);
-            font-size: 2rem;
-            cursor: pointer;
-            z-index: 2100;
-        }
-        .modal-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .modal-close { position: fixed; top: 20px; right: 25px; color: var(--gold); font-size: 3rem; cursor: pointer; z-index: 2100; }
+        .modal-content { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 40px auto; }
 
-        /* 原有时间轴样式保持不变 */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
+        /* 时间轴核心：确保显示 */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
         .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--gold), transparent);
-            transform: translateX(-50%);
+            content: ''; position: absolute; left: 50%; width: 2px; height: 100%;
+            background: linear-gradient(to bottom, var(--gold), transparent); transform: translateX(-50%);
         }
 
         .moment {
-            margin-bottom: 100px;
-            position: relative;
-            width: 100%;
-            opacity: 0;
-            transform: translateY(50px);
+            margin-bottom: 100px; position: relative; width: 100%;
+            opacity: 0; transform: translateY(50px);
             transition: all 1s ease-out;
         }
-
-        .moment.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* 强制显示的类 */
+        .moment.active { opacity: 1 !important; transform: translateY(0) !important; }
 
         .date-badge {
-            background: var(--gold);
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px var(--gold);
+            background: var(--gold); color: #000; padding: 5px 15px; border-radius: 20px;
+            font-weight: bold; display: inline-block; margin-bottom: 15px; box-shadow: 0 0 10px var(--gold);
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 15px;
-            border-left: 5px solid var(--gold);
-            position: relative;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 15px; border-left: 5px solid var(--gold); position: relative;
         }
+        .card h3 { color: var(--rose); margin-bottom: 10px; font-size: 1.4rem; }
+        .card p { font-size: 1.05rem; color: #e0e0e0; text-align: justify; }
+        .highlight { color: var(--gold); font-weight: bold; }
 
-        .card h3 {
-            color: var(--rose);
-            margin-bottom: 10px;
-            font-size: 1.4rem;
-        }
+        /* 星座区 */
+        .zodiac-section { text-align: center; padding: 80px 20px; background: rgba(212, 175, 55, 0.05); margin-top: 50px; }
+        .zodiac-flex { display: flex; justify-content: center; align-items: center; gap: 30px; margin: 30px 0; }
+        .zodiac-svg { width: 80px; height: 80px; stroke: var(--gold); fill: none; stroke-width: 4; filter: drop-shadow(0 0 8px var(--gold)); }
+        .heart-beat { font-size: 2.5rem; color: #ff4d4d; animation: beat 1.2s infinite; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
 
-        .card p {
-            font-size: 1.05rem;
-            color: #e0e0e0;
-            text-align: justify;
-        }
-
-        .highlight {
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        /* 星座展示区保持不变 */
-        .zodiac-section {
-            text-align: center;
-            padding: 80px 20px;
-            background: rgba(212, 175, 55, 0.05);
-            margin-top: 50px;
-        }
-
-        .zodiac-flex {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            margin: 30px 0;
-        }
-
-        .zodiac-box {
-            text-align: center;
-        }
-
-        .zodiac-svg {
-            width: 80px;
-            height: 80px;
-            stroke: var(--gold);
-            fill: none;
-            stroke-width: 4;
-            filter: drop-shadow(0 0 8px var(--gold));
-        }
-
-        .heart-beat {
-            font-size: 2.5rem;
-            color: #ff4d4d;
-            animation: beat 1.2s infinite;
-        }
-
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .footer {
-            text-align: center;
-            padding: 100px 20px;
-            font-family: 'Ma Shan Zheng', cursive;
-        }
-
-        .footer h2 {
-            font-size: 2.5rem;
-            color: var(--gold);
-        }
+        .footer { text-align: center; padding: 100px 20px; font-family: 'Ma Shan Zheng', cursive; }
+        .footer h2 { font-size: 2.5rem; color: var(--gold); }
 
         @media (max-width: 600px) {
             .header h1 { font-size: 2.5rem; }
             .timeline::before { left: 20px; }
             .moment { padding-left: 40px; }
-            .zodiac-flex { gap: 15px; }
         }
     </style>
 </head>
@@ -308,11 +153,9 @@
 
 <div id="starfield"></div>
 
-<!-- 音乐控制器升级 -->
-<div class="music-btn" id="musicBtn" title="点击切换下一首">🎵</div>
-<audio id="bgMusic">
-    <source src="" type="audio/mpeg">
-</audio>
+<!-- 音乐 -->
+<div class="music-btn" id="musicBtn">🎵</div>
+<audio id="bgMusic" preload="auto"></audio>
 
 <header class="header">
     <h1>你好呀,荣荣小姐</h1>
@@ -387,142 +230,114 @@
     </div>
 </div>
 
-<!-- 相册集系统 -->
 <section class="album-section">
     <h2 class="album-title">我们的照片集</h2>
     <p class="album-hint">点击拍立得，翻开不同篇章的回忆</p>
     <div class="photo-grid">
-        <!-- 相册封面1 -->
-        <div class="photo-card album-cover" style="transform: rotate(-3deg);" onclick="openAlbum('meet')">
-            <img src="images/album_meet_cover.jpg" alt="初见相册">
-            <span>初见篇章</span>
+        <div class="photo-card" style="transform: rotate(-3deg);" onclick="openAlbum('meet')">
+            <img src="images/album_meet_cover.jpg" alt="封面1">
+            <span>25篇章</span>
         </div>
-        <!-- 相册封面2 -->
-        <div class="photo-card album-cover" style="transform: rotate(2deg);" onclick="openAlbum('daily')">
-            <img src="images/album_daily_cover.jpg" alt="日常相册">
+        <div class="photo-card" style="transform: rotate(2deg);" onclick="openAlbum('daily')">
+            <img src="images/album_daily_cover.jpg" alt="封面2">
             <span>日常碎片</span>
         </div>
-        <!-- 相册封面3 -->
-        <div class="photo-card album-cover" style="transform: rotate(-2deg);" onclick="openAlbum('travel')">
-            <img src="images/album_travel_cover.jpg" alt="旅行相册">
-            <span>游玩回忆</span>
+        <div class="photo-card" style="transform: rotate(-2deg);" onclick="openAlbum('travel')">
+            <img src="images/album_travel_cover.jpg" alt="封面3">
+            <span>浪漫旅程</span>
         </div>
     </div>
 </section>
 
-<!-- 相册详情弹窗层 -->
+<!-- 弹窗 -->
 <div class="album-modal" id="albumModal">
     <div class="modal-close" onclick="closeAlbum()">×</div>
-    <div class="modal-content" id="modalContent">
-        <!-- 动态注入照片 -->
-    </div>
+    <div class="modal-content" id="modalContent"></div>
 </div>
 
 <section class="zodiac-section">
-    <h3 style="color:var(--gold); margin-bottom: 20px;">命中注定的绝配</h3>
     <div class="zodiac-flex">
         <div class="zodiac-box">
-            <svg class="zodiac-svg" viewBox="0 0 100 100">
-                <path d="M20,30 Q20,20 30,20 Q40,20 40,30 L40,60 M40,30 Q40,20 50,20 Q60,20 60,30 L60,60 M60,30 Q60,20 70,20 Q80,20 80,30 L80,55 Q80,70 65,70 Q55,70 55,55 L75,85" stroke-linecap="round"/>
-            </svg>
+            <svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M20,30 Q20,20 30,20 Q40,20 40,30 L40,60 M40,30 Q40,20 50,20 Q60,20 60,30 L60,60 M60,30 Q60,20 70,20 Q80,20 80,30 L80,55 Q80,70 65,70 Q55,70 55,55 L75,85" stroke-linecap="round"/></svg>
             <p>处女座 · 荣荣</p>
         </div>
         <div class="heart-beat">❤</div>
         <div class="zodiac-box">
-            <svg class="zodiac-svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="65" r="20" /><path d="M20,30 Q50,60 80,30" stroke-linecap="round"/>
-            </svg>
+            <svg class="zodiac-svg" viewBox="0 0 100 100"><circle cx="50" cy="65" r="20" /><path d="M20,30 Q50,60 80,30" stroke-linecap="round"/></svg>
             <p>金牛座 · 佩峰</p>
         </div>
     </div>
-    <p style="font-style: italic; opacity: 0.7; padding: 0 20px;">
-        獬豸守护着法律的公正，而我守护荣荣的笑容。<br>
-        2026，马年将至，愿我的荣荣小姐，跃马扬鞭，平安快乐。
-    </p>
 </section>
 
 <footer class="footer">
     <h2>荣荣，我的女孩，新年快乐</h2>
-    <p style="margin-top: 20px; color: var(--gold);">2026 · 我们的故事还在继续 ❤️</p>
+    <p style="margin-top: 20px; color: var(--gold);">2026 ❤️ 我们的故事还在继续</p>
 </footer>
 
 <script>
-    // --- 1. 多首背景音乐配置 ---
+    // --- 1. 音乐配置：确保这里没有语法错误 ---
     const musicPlaylist = [
-        "music/perfect.mp3",  // 歌单第1首
-         "music/chuimeng.mp3"  // 歌单第3首
-        "music/lovestory.mp3", // 歌单第2首
-        "music/mei.mp3"  // 歌单第3首
-         "music/yummy.mp3"  // 歌单第4首
-         "music/dacheng.mp3"  // 歌单第5首
-         "music/weiyi.mp3"  // 歌单第6首
+        "music/perfect.mp3",
+        "music/chuimeng.mp3",
+        "music/mei.mp3",
+        "music/lovestory.mp3",
+        "music/dacheng.mp3",
+        "music/yummy.mp3",
+        "music/weiyi.mp3"
     ];
     let currentMusicIndex = 0;
     const musicBtn = document.getElementById('musicBtn');
     const bgMusic = document.getElementById('bgMusic');
 
-    function initMusic() {
-        bgMusic.src = musicPlaylist[currentMusicIndex];
-    }
-
-    function toggleMusic() {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            musicBtn.classList.add('playing');
-            musicBtn.innerHTML = "💿";
-        } else {
-            // 点击已经播放的音乐则切歌
-            currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
-            bgMusic.src = musicPlaylist[currentMusicIndex];
-            bgMusic.play();
-        }
+    function playTrack(index) {
+        bgMusic.src = musicPlaylist[index];
+        bgMusic.play().catch(e => console.log("等待交互播放"));
     }
 
     musicBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleMusic();
+        if (bgMusic.paused) {
+            playTrack(currentMusicIndex);
+            musicBtn.classList.add('playing');
+            musicBtn.innerHTML = "💿";
+        } else {
+            // 切歌
+            currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
+            playTrack(currentMusicIndex);
+        }
     });
 
-    // 自动播放下一首
     bgMusic.addEventListener('ended', () => {
         currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
-        bgMusic.src = musicPlaylist[currentMusicIndex];
-        bgMusic.play();
+        playTrack(currentMusicIndex);
     });
 
-    // --- 2. 相册集数据配置 ---
+    // --- 2. 相册数据 ---
     const albumData = {
         'meet': [
-            {src: 'images/meet1.jpg', desc: '初见那一刻'},
-            {src: 'images/meet2.jpg', desc: '第一次对视的地方'},
-            {src: 'images/meet3.jpg', desc: '那个兼职的小屋'}
+            {src: 'images/meet1.jpg', desc: '第一次见面'},
+            {src: 'images/meet2.jpg', desc: '心动的瞬间'}
         ],
         'daily': [
-            {src: 'images/daily1.jpg', desc: '自习室的安静'},
-            {src: 'images/daily2.jpg', desc: '一起吃的工业辣椒'},
-            {src: 'images/daily3.jpg', desc: '你的背影'}
+            {src: 'images/daily1.jpg', desc: '自习室的日子'}
         ],
         'travel': [
-            {src: 'images/travel1.jpg', desc: '银基动物王国'},
-            {src: 'images/travel2.jpg', desc: '郑大的雪夜'},
-            {src: 'images/travel3.jpg', desc: '雪地里的足迹'}
+            {src: 'images/travel1.jpg', desc: '银基动物王国'}
         ]
     };
 
     function openAlbum(key) {
         const modal = document.getElementById('albumModal');
         const content = document.getElementById('modalContent');
-        const photos = albumData[key];
-        
+        const photos = albumData[key] || [];
         content.innerHTML = photos.map(p => `
-            <div class="photo-card" style="transform: rotate(${(Math.random()*6 - 3)}deg);">
-                <img src="${p.src}" alt="photo">
+            <div class="photo-card" style="transform: rotate(${(Math.random()*6-3)}deg)">
+                <img src="${p.src}" onerror="this.src='https://via.placeholder.com/300?text=Image+Missing'">
                 <span>${p.desc}</span>
             </div>
         `).join('');
-        
         modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // 禁止底页滚动
+        document.body.style.overflow = 'hidden';
     }
 
     function closeAlbum() {
@@ -530,29 +345,41 @@
         document.body.style.overflow = 'auto';
     }
 
-    // --- 3. 基础逻辑 (星空&滚动) ---
+    // --- 3. 滚动监测：这是显示故事的关键 ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.05 });
+
+    // 初始化显示
+    window.addEventListener('load', () => {
+        document.querySelectorAll('.moment').forEach(m => observer.observe(m));
+        // 兜底：如果5秒后还没显示，强行显示第一条
+        setTimeout(() => {
+            const first = document.querySelector('.moment');
+            if(first) first.classList.add('active');
+        }, 3000);
+    });
+
+    // 交互播放
     document.addEventListener('click', () => {
         if(bgMusic.paused && !musicBtn.classList.contains('playing')) {
-            toggleMusic();
+            playTrack(currentMusicIndex);
+            musicBtn.classList.add('playing');
+            musicBtn.innerHTML = "💿";
         }
     }, { once: true });
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('active');
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.moment').forEach(m => observer.observe(m));
-
+    // 星空
     const starfield = document.getElementById('starfield');
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 80; i++) {
         const star = document.createElement('div');
-        star.style.cssText = `position:absolute; width:${Math.random()*3}px; height:${Math.random()*3}px; background:#fff; left:${Math.random()*100}%; top:${Math.random()*100}%; border-radius:50%; opacity:${Math.random()}; animation: pulse ${Math.random()*3+2}s infinite;`;
+        star.style.cssText = `position:absolute; width:${Math.random()*2}px; height:${Math.random()*2}px; background:#fff; left:${Math.random()*100}%; top:${Math.random()*100}%; border-radius:50%; opacity:${Math.random()}; animation: pulse ${Math.random()*3+2}s infinite;`;
         starfield.appendChild(star);
     }
-
-    initMusic();
 </script>
 
 <style>
