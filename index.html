@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSR&LPF的爱情简史</title>
+    <title>MSR&LPF的专属网页</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap');
 
@@ -51,7 +51,7 @@
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
         }
 
-        /* --- 新增：音乐控制样式 --- */
+        /* --- 音乐控制样式 --- */
         .music-btn {
             position: fixed;
             top: 25px;
@@ -77,7 +77,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* --- 新增：相册样式 --- */
+        /* --- 相册集系统样式 --- */
         .album-section {
             padding: 60px 20px;
             text-align: center;
@@ -88,24 +88,51 @@
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 2.8rem;
             color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .album-hint {
+            color: var(--gold);
+            font-size: 0.9rem;
             margin-bottom: 40px;
+            opacity: 0.8;
         }
         .photo-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
         }
+        /* 封面卡片特有样式 */
+        .album-cover {
+            position: relative;
+            cursor: pointer;
+        }
+        .album-cover::after {
+            content: "点击打开相册";
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(212, 175, 55, 0.9);
+            color: #000;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .album-cover:hover::after { opacity: 1; }
+
         .photo-card {
             background: #fff;
             padding: 12px 12px 35px 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: 0.4s;
-            width: 260px;
+            width: 240px;
         }
         .photo-card img {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
             display: block;
         }
@@ -114,14 +141,42 @@
             margin-top: 15px;
             color: #333;
             font-family: 'Ma Shan Zheng', cursive;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         .photo-card:hover {
             transform: scale(1.05) rotate(0deg) !important;
             z-index: 10;
         }
 
-        /* 时间轴容器 */
+        /* 弹窗相册详情层 */
+        .album-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 16, 0.98);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 50px 20px;
+        }
+        .modal-close {
+            position: fixed;
+            top: 20px; right: 20px;
+            color: var(--gold);
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 2100;
+        }
+        .modal-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 原有时间轴样式保持不变 */
         .timeline {
             position: relative;
             max-width: 800px;
@@ -139,7 +194,6 @@
             transform: translateX(-50%);
         }
 
-        /* 每一个故事节点 */
         .moment {
             margin-bottom: 100px;
             position: relative;
@@ -186,13 +240,12 @@
             text-align: justify;
         }
 
-        /* 重点宠溺文案样式 */
         .highlight {
             color: var(--gold);
             font-weight: bold;
         }
 
-        /* 星座展示区 */
+        /* 星座展示区保持不变 */
         .zodiac-section {
             text-align: center;
             padding: 80px 20px;
@@ -232,7 +285,6 @@
             50% { transform: scale(1.3); }
         }
 
-        /* 底部祝福 */
         .footer {
             text-align: center;
             padding: 100px 20px;
@@ -244,11 +296,6 @@
             color: var(--gold);
         }
 
-        .footer p {
-            font-size: 1.5rem;
-        }
-
-        /* 响应式调整 */
         @media (max-width: 600px) {
             .header h1 { font-size: 2.5rem; }
             .timeline::before { left: 20px; }
@@ -261,10 +308,10 @@
 
 <div id="starfield"></div>
 
-<!-- 新增：音频标签 & 按钮 -->
-<div class="music-btn" id="musicBtn">🎵</div>
-<audio id="bgMusic" loop>
-    <source src="music/perfect.mp3" type="audio/mpeg">
+<!-- 音乐控制器升级 -->
+<div class="music-btn" id="musicBtn" title="点击切换下一首">🎵</div>
+<audio id="bgMusic">
+    <source src="" type="audio/mpeg">
 </audio>
 
 <header class="header">
@@ -274,7 +321,7 @@
 </header>
 
 <div class="timeline">
-    <!-- 10.24 -->
+    <!-- 原有故事内容 -->
     <div class="moment">
         <span class="date-badge">2025.10.24</span>
         <div class="card">
@@ -283,7 +330,6 @@
         </div>
     </div>
 
-    <!-- 11.19 -->
     <div class="moment">
         <span class="date-badge">2025.11.19 - 11.21</span>
         <div class="card">
@@ -292,7 +338,6 @@
         </div>
     </div>
 
-    <!-- 11.23 -->
     <div class="moment">
         <span class="date-badge">2025.11.23</span>
         <div class="card">
@@ -301,7 +346,6 @@
         </div>
     </div>
 
-    <!-- 11.30 -->
     <div class="moment">
         <span class="date-badge">2025.11.30</span>
         <div class="card">
@@ -310,7 +354,6 @@
         </div>
     </div>
 
-    <!-- 12.02 -->
     <div class="moment">
         <span class="date-badge">2025.12.2</span>
         <div class="card">
@@ -319,7 +362,6 @@
         </div>
     </div>
 
-    <!-- 12.06 -->
     <div class="moment">
         <span class="date-badge">2025.12.06</span>
         <div class="card">
@@ -328,7 +370,6 @@
         </div>
     </div>
 
-    <!-- 12.12 -->
     <div class="moment">
         <span class="date-badge">2025.12.12</span>
         <div class="card">
@@ -337,7 +378,6 @@
         </div>
     </div>
 
-    <!-- 12.19 -->
     <div class="moment">
         <span class="date-badge">2025.12.19 - 12.20</span>
         <div class="card">
@@ -347,52 +387,50 @@
     </div>
 </div>
 
-<!-- 新增：相册部分 -->
+<!-- 相册集系统 -->
 <section class="album-section">
-    <h2 class="album-title">我们的瞬间</h2>
+    <h2 class="album-title">我们的照片集</h2>
+    <p class="album-hint">点击拍立得，翻开不同篇章的回忆</p>
     <div class="photo-grid">
-        <div class="photo-card" style="transform: rotate(-3deg);">
-            <img src="images/photo1.jpg" alt="1">
-            <span>初见那天</span>
+        <!-- 相册封面1 -->
+        <div class="photo-card album-cover" style="transform: rotate(-3deg);" onclick="openAlbum('meet')">
+            <img src="images/album_meet_cover.jpg" alt="初见相册">
+            <span>初见篇章</span>
         </div>
-        <div class="photo-card" style="transform: rotate(2deg);">
-            <img src="images/photo2.jpg" alt="2">
-            <span>银基动物王国</span>
+        <!-- 相册封面2 -->
+        <div class="photo-card album-cover" style="transform: rotate(2deg);" onclick="openAlbum('daily')">
+            <img src="images/album_daily_cover.jpg" alt="日常相册">
+            <span>日常碎片</span>
         </div>
-        <div class="photo-card" style="transform: rotate(-1deg);">
-            <img src="images/photo3.jpg" alt="3">
-            <span>雪地里的吻</span>
-        </div>
-        <div class="photo-card" style="transform: rotate(3deg);">
-            <img src="images/photo4.jpg" alt="4">
-            <span>最美的合照</span>
-        </div>
-        <div class="photo-card" style="transform: rotate(-2deg);">
-            <img src="images/photo5.jpg" alt="5">
-            <span>未来有你</span>
+        <!-- 相册封面3 -->
+        <div class="photo-card album-cover" style="transform: rotate(-2deg);" onclick="openAlbum('travel')">
+            <img src="images/album_travel_cover.jpg" alt="旅行相册">
+            <span>游玩回忆</span>
         </div>
     </div>
 </section>
+
+<!-- 相册详情弹窗层 -->
+<div class="album-modal" id="albumModal">
+    <div class="modal-close" onclick="closeAlbum()">×</div>
+    <div class="modal-content" id="modalContent">
+        <!-- 动态注入照片 -->
+    </div>
+</div>
 
 <section class="zodiac-section">
     <h3 style="color:var(--gold); margin-bottom: 20px;">命中注定的绝配</h3>
     <div class="zodiac-flex">
         <div class="zodiac-box">
-            <!-- 标准处女座 Virgo -->
             <svg class="zodiac-svg" viewBox="0 0 100 100">
-                <path d="M20,30 Q20,20 30,20 Q40,20 40,30 L40,60 
-                         M40,30 Q40,20 50,20 Q60,20 60,30 L60,60 
-                         M60,30 Q60,20 70,20 Q80,20 80,30 L80,55 
-                         Q80,70 65,70 Q55,70 55,55 L75,85" stroke-linecap="round"/>
+                <path d="M20,30 Q20,20 30,20 Q40,20 40,30 L40,60 M40,30 Q40,20 50,20 Q60,20 60,30 L60,60 M60,30 Q60,20 70,20 Q80,20 80,30 L80,55 Q80,70 65,70 Q55,70 55,55 L75,85" stroke-linecap="round"/>
             </svg>
             <p>处女座 · 荣荣</p>
         </div>
         <div class="heart-beat">❤</div>
         <div class="zodiac-box">
-            <!-- 标准金牛座 Taurus -->
             <svg class="zodiac-svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="65" r="20" />
-                <path d="M20,30 Q50,60 80,30" stroke-linecap="round"/>
+                <circle cx="50" cy="65" r="20" /><path d="M20,30 Q50,60 80,30" stroke-linecap="round"/>
             </svg>
             <p>金牛座 · 佩峰</p>
         </div>
@@ -409,72 +447,117 @@
 </footer>
 
 <script>
-    // --- 新增：音乐控制逻辑 ---
+    // --- 1. 多首背景音乐配置 ---
+    const musicPlaylist = [
+        "music/perfect.mp3",  // 歌单第1首
+         "music/chuimeng.mp3"  // 歌单第3首
+        "music/lovestory.mp3", // 歌单第2首
+        "music/mei.mp3"  // 歌单第3首
+         "music/yummy.mp3"  // 歌单第4首
+         "music/dachengxiaoai.mp3"  // 歌单第5首
+         "music/weiyi.mp3"  // 歌单第6首
+    ];
+    let currentMusicIndex = 0;
     const musicBtn = document.getElementById('musicBtn');
     const bgMusic = document.getElementById('bgMusic');
-    let isPlaying = false;
+
+    function initMusic() {
+        bgMusic.src = musicPlaylist[currentMusicIndex];
+    }
 
     function toggleMusic() {
-        if (isPlaying) {
-            bgMusic.pause();
-            musicBtn.classList.remove('playing');
-            musicBtn.innerHTML = "🎵";
-        } else {
+        if (bgMusic.paused) {
             bgMusic.play();
             musicBtn.classList.add('playing');
             musicBtn.innerHTML = "💿";
+        } else {
+            // 点击已经播放的音乐则切歌
+            currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
+            bgMusic.src = musicPlaylist[currentMusicIndex];
+            bgMusic.play();
         }
-        isPlaying = !isPlaying;
     }
 
-    musicBtn.addEventListener('click', toggleMusic);
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMusic();
+    });
 
-    // 针对浏览器政策：用户首次点击页面任意处尝试自动播放
+    // 自动播放下一首
+    bgMusic.addEventListener('ended', () => {
+        currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
+        bgMusic.src = musicPlaylist[currentMusicIndex];
+        bgMusic.play();
+    });
+
+    // --- 2. 相册集数据配置 ---
+    const albumData = {
+        'meet': [
+            {src: 'images/meet1.jpg', desc: '初见那一刻'},
+            {src: 'images/meet2.jpg', desc: '第一次对视的地方'},
+            {src: 'images/meet3.jpg', desc: '那个兼职的小屋'}
+        ],
+        'daily': [
+            {src: 'images/daily1.jpg', desc: '自习室的安静'},
+            {src: 'images/daily2.jpg', desc: '一起吃的工业辣椒'},
+            {src: 'images/daily3.jpg', desc: '你的背影'}
+        ],
+        'travel': [
+            {src: 'images/travel1.jpg', desc: '银基动物王国'},
+            {src: 'images/travel2.jpg', desc: '郑大的雪夜'},
+            {src: 'images/travel3.jpg', desc: '雪地里的足迹'}
+        ]
+    };
+
+    function openAlbum(key) {
+        const modal = document.getElementById('albumModal');
+        const content = document.getElementById('modalContent');
+        const photos = albumData[key];
+        
+        content.innerHTML = photos.map(p => `
+            <div class="photo-card" style="transform: rotate(${(Math.random()*6 - 3)}deg);">
+                <img src="${p.src}" alt="photo">
+                <span>${p.desc}</span>
+            </div>
+        `).join('');
+        
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // 禁止底页滚动
+    }
+
+    function closeAlbum() {
+        document.getElementById('albumModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // --- 3. 基础逻辑 (星空&滚动) ---
     document.addEventListener('click', () => {
-        if(!isPlaying) { toggleMusic(); }
+        if(bgMusic.paused && !musicBtn.classList.contains('playing')) {
+            toggleMusic();
+        }
     }, { once: true });
 
-
-    // 滚动监测
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('active');
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.moment').forEach(moment => {
-        observer.observe(moment);
-    });
+    document.querySelectorAll('.moment').forEach(m => observer.observe(m));
 
-    // 简单的背景星空生成
     const starfield = document.getElementById('starfield');
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
-        star.style.position = 'absolute';
-        star.style.width = Math.random() * 3 + 'px';
-        star.style.height = star.style.width;
-        star.style.backgroundColor = '#fff';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.borderRadius = '50%';
-        star.style.opacity = Math.random();
-        star.style.animation = `pulse ${Math.random() * 3 + 2}s infinite`;
+        star.style.cssText = `position:absolute; width:${Math.random()*3}px; height:${Math.random()*3}px; background:#fff; left:${Math.random()*100}%; top:${Math.random()*100}%; border-radius:50%; opacity:${Math.random()}; animation: pulse ${Math.random()*3+2}s infinite;`;
         starfield.appendChild(star);
     }
+
+    initMusic();
 </script>
 
 <style>
-    @keyframes pulse {
-        0%, 100% { opacity: 0.3; }
-        50% { opacity: 1; }
-    }
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-        40% {transform: translateY(-10px);}
-        60% {transform: translateY(-5px);}
-    }
+    @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 </style>
 
 </body>
