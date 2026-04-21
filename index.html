@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSR&LPF的专属网页</title>
+    <title>MSR&LPF的专属网页 - 春日篇章</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap');
 
         :root {
             --gold: #D4AF37;
-            --rose: #ff85a1;
+            --rose: #ff85a1; /* 柔和的玫瑰粉 */
+            --cherry: #ffb7c5; /* 春日樱花粉 */
             --bg: #050510;
         }
 
@@ -23,13 +24,36 @@
             overflow-x: hidden;
         }
 
-        /* 动态背景星空 */
+        /* 动态背景：融入春日夜樱色调的星空 */
         #starfield {
             position: fixed;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            background: radial-gradient(ellipse at bottom, #2B1B35 0%, #090A0F 100%);
+        }
+
+        /* 樱花花瓣样式 */
+        .petal {
+            position: fixed;
+            background: linear-gradient(to bottom right, var(--cherry), var(--rose));
+            border-radius: 15px 0 15px 0;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: -1;
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+        }
+
+        @keyframes fall {
+            0% { top: -10%; opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.5; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(25px) rotate(45deg); }
         }
 
         /* 顶部装饰 */
@@ -85,10 +109,11 @@
             transition: 0.4s;
             width: 260px;
             cursor: pointer;
+            position: relative;
         }
         .photo-card img { width: 100%; height: 220px; object-fit: cover; display: block; background: #222; }
         .photo-card span { display: block; margin-top: 15px; color: #333; font-family: 'Ma Shan Zheng', cursive; font-size: 1.2rem; }
-        .photo-card:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 10; }
+        .photo-card:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 10; box-shadow: 0 15px 40px rgba(255, 183, 197, 0.4); }
 
         /* 弹窗相册 */
         .album-modal {
@@ -104,11 +129,11 @@
         .modal-close { position: fixed; top: 20px; right: 25px; color: var(--gold); font-size: 3rem; cursor: pointer; z-index: 2100; }
         .modal-content { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 40px auto; }
 
-        /* 时间轴核心：确保显示 */
+        /* 时间轴核心：优化了时间轴的渐变色彩，融入春天元素 */
         .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
         .timeline::before {
             content: ''; position: absolute; left: 50%; width: 2px; height: 100%;
-            background: linear-gradient(to bottom, var(--gold), transparent); transform: translateX(-50%);
+            background: linear-gradient(to bottom, var(--gold) 0%, var(--cherry) 80%, transparent 100%); transform: translateX(-50%);
         }
 
         .moment {
@@ -116,21 +141,23 @@
             opacity: 0; transform: translateY(50px);
             transition: all 1s ease-out;
         }
-        /* 强制显示的类 */
         .moment.active { opacity: 1 !important; transform: translateY(0) !important; }
 
         .date-badge {
             background: var(--gold); color: #000; padding: 5px 15px; border-radius: 20px;
-            font-weight: bold; display: inline-block; margin-bottom: 15px; box-shadow: 0 0 10px var(--gold);
+            font-weight: bold; display: inline-block; margin-bottom: 15px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         .card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
             padding: 25px; border-radius: 15px; border-left: 5px solid var(--gold); position: relative;
+            transition: border-color 0.3s;
         }
+        .card:hover { border-left-color: var(--cherry); }
         .card h3 { color: var(--rose); margin-bottom: 10px; font-size: 1.4rem; }
         .card p { font-size: 1.05rem; color: #e0e0e0; text-align: justify; }
         .highlight { color: var(--gold); font-weight: bold; }
+        .highlight-spring { color: var(--cherry); font-weight: bold; }
 
         /* 星座区 */
         .zodiac-section { text-align: center; padding: 80px 20px; background: rgba(212, 175, 55, 0.05); margin-top: 50px; }
@@ -160,8 +187,9 @@
 
 <header class="header">
     <h1>你好呀,荣荣小姐</h1>
-    <p style="letter-spacing: 3px; opacity: 0.8;">MSR ❤️ LPF</p>
-    <div style="margin-top: 50px; font-size: 1.5rem; animation: bounce 2s infinite;">↓</div>
+    <p style="letter-spacing: 3px; opacity: 0.8; font-size: 1.2rem;">MSR ❤️ LPF</p>
+    <p style="margin-top: 10px; color: var(--cherry); font-family: 'Ma Shan Zheng', cursive; font-size: 1.5rem;">陪你走过寒冬，也陪你拥抱春风</p>
+    <div style="margin-top: 40px; font-size: 1.5rem; animation: bounce 2s infinite;">↓</div>
 </header>
 
 <div class="timeline">
@@ -230,7 +258,6 @@
         </div>
     </div>
 
-    <!-- 12.23 -->
     <div class="moment">
         <span class="date-badge">2025.12.23</span>
         <div class="card">
@@ -239,7 +266,6 @@
         </div>
     </div>
 
-    <!-- 12.27 -->
     <div class="moment">
         <span class="date-badge">2025.12.27</span>
         <div class="card">
@@ -251,7 +277,6 @@
         </div>
     </div>
 
-    <!-- 12.31-01.01 -->
     <div class="moment">
         <span class="date-badge">2025.12.31 - 2026.01.01</span>
         <div class="card">
@@ -259,7 +284,7 @@
             <p>在郑大的跨年，我在荣荣的新年视频里留下了<span class="highlight">不改初心</span>的承诺。元旦那晚的漂亮饭，荣荣是我眼中最夺目的风景，我想做你一辈子的<span class="highlight">专属摄影师</span>。</p>
         </div>
     </div>
-    <!-- 01.10 -->
+
     <div class="moment">
         <span class="date-badge">2026.01.10</span>
         <div class="card">
@@ -268,7 +293,6 @@
         </div>
     </div>
 
-    <!-- 01.09-01.15 -->
     <div class="moment">
         <span class="date-badge">2026.01.09 - 01.15</span>
         <div class="card">
@@ -277,7 +301,6 @@
         </div>
     </div>
 
-    <!-- 01.16-01.17 -->
     <div class="moment">
         <span class="date-badge">2026.01.16 - 01.17</span>
         <div class="card">
@@ -286,7 +309,6 @@
         </div>
     </div>
 
-    <!-- 01.19 -->
     <div class="moment">
         <span class="date-badge">2026.01.19</span>
         <div class="card">
@@ -295,7 +317,6 @@
         </div>
     </div>
 
-    <!-- 01.20 -->
     <div class="moment">
         <span class="date-badge">2026.01.20</span>
         <div class="card">
@@ -304,7 +325,6 @@
         </div>
     </div>
 
-    <!-- 01.26 -->
     <div class="moment">
         <span class="date-badge">2026.01.26</span>
         <div class="card">
@@ -313,7 +333,6 @@
         </div>
     </div>
 
-    <!-- 01.30-02.02 -->
     <div class="moment">
         <span class="date-badge">2026.01.30 - 02.02</span>
         <div class="card">
@@ -322,12 +341,53 @@
         </div>
     </div>
 
-    <!-- 02.02-02.04 -->
     <div class="moment">
         <span class="date-badge">2026.02.02 - 02.04</span>
         <div class="card">
             <h3>凤凰：姜国公主与永恒梦境</h3>
             <p>古城江边，你化身苗服女孩，化身“荣葵公主”。虽然我有过言辞失当，但我学到了爱要“三思而后言”。看着你在镜头里如画般惊艳，我只想在这场<span class="highlight">湘西美梦</span>里，陪你一直走下去。</p>
+        </div>
+    </div>
+
+    <!-- ================== 新增春日故事篇章 ================== -->
+
+    <div class="moment">
+        <span class="date-badge" style="background: var(--cherry);">2026.02.27</span>
+        <div class="card" style="border-left-color: var(--cherry);">
+            <h3>重逢：黄玫瑰的守候</h3>
+            <p>经过一个漫长假期的等待，思念在重逢那一刻彻底具象化。我手捧着你最爱的黄玫瑰，早早等在高铁站的出站口。当看到你熟悉的身影走向我时，整个世界的喧嚣都退去了。这束黄玫瑰，不仅是迎接你归来的礼物，更是我对你<span class="highlight-spring">纯粹而炽热的爱意</span>。</p>
+        </div>
+    </div>
+
+    <div class="moment">
+        <span class="date-badge" style="background: var(--cherry);">2026.03.08</span>
+        <div class="card" style="border-left-color: var(--cherry);">
+            <h3>九十九天：双向奔赴的偏爱</h3>
+            <p>在一起的第99天，寓意着长长久久。我们一起分享了香甜的奶油蛋糕。我为你准备了Nike运动鞋，希望我的女孩能多点运动，健康快乐；而你深知我的喜好，为我挑选了一件帅气的夹克。我们的爱，从来都是这样贴心的<span class="highlight-spring">双向奔赴</span>。</p>
+        </div>
+    </div>
+
+    <div class="moment">
+        <span class="date-badge" style="background: var(--cherry);">2026.03.09</span>
+        <div class="card" style="border-left-color: var(--cherry);">
+            <h3>百日纪念：粉色花海与秘密承诺</h3>
+            <p>100天纪念日，我蓄谋已久了一场浪漫惊喜。我偷偷为你订了最娇艳的粉色系鲜花，写下了一封满载未来承诺的信。晚上，我们回到了故事开始的地方——第一次约会的云晓仙腊味火锅。那天我特意做了发型，你也化了精致的妆容。饭后我拿出藏好的花和信的那一刻，你的惊喜与感动，是我见过<span class="highlight-spring">最美的风景</span>。</p>
+        </div>
+    </div>
+
+    <div class="moment">
+        <span class="date-badge" style="background: var(--cherry);">2026.03.16</span>
+        <div class="card" style="border-left-color: var(--cherry);">
+            <h3>樱雪：同频共振的春日定格</h3>
+            <p>纵然那周有繁重的组会汇报压力，但我怎能错过与你共赏这短暂的樱花季？在郑大的樱花林里，我们用镜头定格了无数美好瞬间。在花瓣飘落间，我愈发确信我们的灵魂是如此契合。春天或许很短，但与你<span class="highlight-spring">同频共振</span>的时光，我会无限拉长。</p>
+        </div>
+    </div>
+
+    <div class="moment">
+        <span class="date-badge" style="background: var(--cherry);">2026.03.29</span>
+        <div class="card" style="border-left-color: var(--cherry);">
+            <h3>寻春：花裙子与绿博园的风</h3>
+            <p>为了抓住春天的尾巴，我们去了郑州绿博园。你特意穿上了新买的碎花裙，化着美美的妆，像春天里最灵动的仙子。微风拂过你的裙摆，我们在满园春色中漫步。这个春天，因为有你，所有的美好都有了<span class="highlight-spring">具象的表达</span>。</p>
         </div>
     </div>
 
@@ -337,25 +397,30 @@
     <h2 class="album-title">我们的照片集</h2>
     <p class="album-hint">点击拍立得，翻开不同篇章的回忆</p>
     <div class="photo-grid">
-    <!-- 25篇章 - 稍微左偏 -->
+        <!-- 25篇章 -->
         <div class="photo-card" style="transform: rotate(-3deg);" onclick="openAlbum('meet')">
             <img src="images/covers/meet_cover.jpg" alt="封面1">
             <span>25篇章</span>
         </div>
-        <!-- 日常碎片 - 稍微右偏 -->
+        <!-- 日常碎片 -->
         <div class="photo-card" style="transform: rotate(2deg);" onclick="openAlbum('daily')">
             <img src="images/covers/daily_cover.jpg" alt="封面2">
             <span>日常碎片</span>
         </div>
-        <!-- 浪漫旅程 - 稍微左偏 -->
+        <!-- 浪漫旅程 -->
         <div class="photo-card" style="transform: rotate(-2deg);" onclick="openAlbum('travel')">
             <img src="images/covers/travel_cover.jpg" alt="封面3">
             <span>浪漫旅程</span>
         </div>
-        <!-- 湘西寻梦 - 稍微右偏，形成交替感 -->
+        <!-- 湘西寻梦 -->
         <div class="photo-card" style="transform: rotate(4deg);" onclick="openAlbum('xiangxi')">
             <img src="images/covers/xiangxi_cover.jpg" alt="封面4">
             <span>湘西寻梦</span>
+        </div>
+        <!-- 新增：春日限定 -->
+        <div class="photo-card" style="transform: rotate(-1deg);" onclick="openAlbum('spring')">
+            <img src="images/covers/spring_cover.jpg" alt="封面5">
+            <span style="color: var(--cherry);">春日限定</span>
         </div>
     </div>
 </section>
@@ -391,7 +456,7 @@
 
 <footer class="footer">
     <h2>荣荣，我的女孩，2026天天开心</h2>
-    <p style="margin-top: 20px; color: var(--gold);">2026 ❤️ 我们的故事还在继续</p>
+    <p style="margin-top: 20px; color: var(--gold);">2026 ❤️ 春风有信，花期不误</p>
 </footer>
 
 <script>
@@ -469,9 +534,19 @@
             {src: 'images/album_xiangxi/photo17.jpg', desc: '苗服男孩'},
             {src: 'images/album_xiangxi/photo18.jpg', desc: '苗服女孩美美哒'},
             {src: 'images/album_xiangxi/photo19.jpg', desc: '蓝衣苗服女孩'}
+        ],
+        // ================= 新增春日相册数据 =================
+        'spring': [
+            {src: 'images/album_spring/photo1.jpg', desc: '高铁站的黄玫瑰'},
+            {src: 'images/album_spring/photo2.jpg', desc: '99天纪念礼物'},
+            {src: 'images/album_spring/photo3.jpg', desc: '100天粉色花海'},
+            {src: 'images/album_spring/photo4.jpg', desc: '樱华少女'},
+            {src: 'images/album_spring/photo5.jpg', desc: '郑大樱花园'},
+            {src: 'images/album_spring/photo6.jpg', desc: '樱花树下的定格'},
+            {src: 'images/album_spring/photo7.jpg', desc: '绿博园寻春'},
+            {src: 'images/album_spring/photo8.jpg', desc: '仙气的碎花裙'}
         ]
     };
-
 
     function openAlbum(key) {
         const modal = document.getElementById('albumModal');
@@ -479,7 +554,7 @@
         const photos = albumData[key] || [];
         content.innerHTML = photos.map(p => `
             <div class="photo-card" style="transform: rotate(${(Math.random()*6-3)}deg)">
-                <img src="${p.src}" onerror="this.src='https://via.placeholder.com/300?text=Image+Missing'">
+                <img src="${p.src}" onerror="this.src='https://via.placeholder.com/300?text=暂无图片'">
                 <span>${p.desc}</span>
             </div>
         `).join('');
@@ -492,7 +567,7 @@
         document.body.style.overflow = 'auto';
     }
 
-    // --- 3. 滚动监测：这是显示故事的关键 ---
+    // --- 3. 滚动监测：显示故事的关键 ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -504,7 +579,7 @@
     // 初始化显示
     window.addEventListener('load', () => {
         document.querySelectorAll('.moment').forEach(m => observer.observe(m));
-        // 兜底：如果5秒后还没显示，强行显示第一条
+        // 兜底：如果3秒后还没显示，强行显示第一条
         setTimeout(() => {
             const first = document.querySelector('.moment');
             if(first) first.classList.add('active');
@@ -520,12 +595,28 @@
         }
     }, { once: true });
 
-    // 星空
+    // --- 4. 背景特效生成：星空 + 樱花 ---
     const starfield = document.getElementById('starfield');
-    for (let i = 0; i < 80; i++) {
+    
+    // 生成星星 (略微减少数量给樱花让位)
+    for (let i = 0; i < 50; i++) {
         const star = document.createElement('div');
         star.style.cssText = `position:absolute; width:${Math.random()*2}px; height:${Math.random()*2}px; background:#fff; left:${Math.random()*100}%; top:${Math.random()*100}%; border-radius:50%; opacity:${Math.random()}; animation: pulse ${Math.random()*3+2}s infinite;`;
         starfield.appendChild(star);
+    }
+
+    // 生成飘落的樱花花瓣
+    for (let i = 0; i < 25; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        // 随机大小，位置，动画时长和延迟
+        const size = Math.random() * 8 + 6; // 6px 到 14px
+        petal.style.width = `${size}px`;
+        petal.style.height = `${size * 1.2}px`;
+        petal.style.left = `${Math.random() * 100}vw`;
+        petal.style.animationDuration = `${Math.random() * 5 + 5}s, ${Math.random() * 3 + 2}s`; // 下落时间，摇摆时间
+        petal.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 2}s`;
+        starfield.appendChild(petal);
     }
 </script>
 
